@@ -1,0 +1,49 @@
+replicaCount: 1
+
+image:
+  repository: abdulbnri/my-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+serviceAccount:
+  create: true   # Set to true if you want to create a service account
+  name: my-app-service       # If you want Helm to auto-generate the service account name
+
+ingress:
+  enabled: true
+  annotations: {}
+  hosts:
+    - host: localhost  # Define your host here
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+
+autoscaling:
+  enabled: false  # Set to true if you want to enable autoscaling
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80  # Target CPU usage for autoscaling
+
+
+
+# Define environment variables
+env:
+  - name: ENVIRONMENT
+    value: "development"
+  - name: LOG_LEVEL
+    value: "info"
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
